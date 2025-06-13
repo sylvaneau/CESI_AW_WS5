@@ -9,9 +9,9 @@ app.use(express.urlencoded({ extended: true }));
 
 require('./src/routes/auth.routes')(app);
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World! 2')
-// })
+app.get('/get-data', (req, res) => {
+  res.send('Hello World!')
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

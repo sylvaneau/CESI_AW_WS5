@@ -30,21 +30,27 @@ exports.authenticate = (req, res) => {
   let authHeader = req.headers["authorization"];
   let token;
 
-  if (authHeader.startsWith("Bearer ")) {
-    token = authHeader.substring(7, authHeader.length);
-    token = jwt.verify(token, process.env.ACCESS_JWT_KEY);
+  try {
+    if (authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7, authHeader.length);
+      token = jwt.verify(token, process.env.ACCESS_JWT_KEY);
 
-    let user_found = User_DB.some(user => {
-      if (user.username == token.username) {
-        return true;
-      }
-    });
+      let user_found = User_DB.some(user => {
+        if (user.username == token.username) {
+          return true;
+        }
+      });
 
-    if (user_found)
-      return res.status(200).send();
-    else
+      if (user_found)
+        return res.status(200).send();
+      else
+        return res.status(401).send();
+    } else {
       return res.status(401).send();
-  } else {
+    }
+  }
+  catch {
     return res.status(401).send();
   }
+
 };
